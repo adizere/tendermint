@@ -72,12 +72,12 @@ type Application struct {
 
 func NewApplication() *Application {
 	state := loadState(dbm.NewMemDB())
-	return &Application{state: state}
+	return &Application{state: state, RetainBlocks: 1}
 }
 
 func (app *Application) Info(req types.RequestInfo) (resInfo types.ResponseInfo) {
 	return types.ResponseInfo{
-		Data:             fmt.Sprintf("{\"size\":%v}", app.state.Size),
+		Data:             fmt.Sprintf("{\"size\":%v, \"height\":%v, \"retain\":%v}", app.state.Size, app.state.Height, app.RetainBlocks),
 		Version:          version.ABCIVersion,
 		AppVersion:       ProtocolVersion,
 		LastBlockHeight:  app.state.Height,
